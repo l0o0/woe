@@ -13,7 +13,7 @@
 #' iv.num(german_data,"age","gb")
 #' iv.num(german_data,"age","gb")
 
-iv.num <- function(df,x,y,verbose=FALSE,rcontrol=NULL) {
+iv.num <- function(df,x,y,verbose=FALSE,rcontrol=NULL, naomit=TRUE) {
 
   if(verbose) cat("  Building rpart model",sep="\n")
   #rcontrol <- ifelse(is.null(rcontrol),rpart.control(cp=0.001,minbucket=nrow(df)/10),rcontrol)
@@ -41,13 +41,23 @@ iv.num <- function(df,x,y,verbose=FALSE,rcontrol=NULL) {
   t$tmp_iv_calc_label <- factor(t$tmp_iv_calc_label)
 
   if(verbose) cat("    DF Merge",sep="\n")
-  df <- merge(df, t["tmp_iv_calc_label"], by=0, all=TRUE) # str(df)
+  if (sum(is.na(df[,x])>0)) {
+    no_na_row <- rownames(df)[!is.na(df[,x])]
+    rownames(t) = no_na_row
+    df <- merge(df, t["tmp_iv_calc_label"], by=0, all=TRUE)
+    tmp_vector = as.vector(df[, 'tmp_iv_calc_label'])
+    tmp_vector[is.na(tmp_vector)] = 'NA'  # add 'NA' in vector
+    df[, 'tmp_iv_calc_label'] = factor(tmp_vector)
+  }
+  else {
+    df <- merge(df, t["tmp_iv_calc_label"], by=0, all=TRUE) # str(df)
+  }
   if(verbose) cat("  Calling iv.str for nodes",sep="\n")
-  iv_data <- iv.str(df,"tmp_iv_calc_label",y)
-
+  iv_data <- iv.str(df,"tmp_iv_calc_label", y, naomit=naomit)
+  
   if(verbose) cat("  Formatting output",sep="\n")
   iv_data$variable <- x
-
-  sqldf("select iv.*, tr.sql || woe as sql from iv_data iv join tree_rules tr on (iv.class=tr.class_label) order by tr.min")
+  iv_data
+  #sqldf("select iv.*, tr.sql || woe as sql from iv_data iv join tree_rules tr on (iv.class=tr.class_label) order by tr.min")
 }
 

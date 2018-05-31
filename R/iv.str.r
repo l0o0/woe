@@ -11,7 +11,7 @@
 #' iv.str(german_data,"purpose","gb")
 #' iv.str(german_data,"savings","gb")
 
-iv.str <- function(df,x,y,verbose=FALSE) {
+iv.str <- function(df,x,y,verbose=FALSE, naomit=TRUE) {
   if (!(class(df)=="data.frame")) {
     stop("Parameter df has to be a data frame.")
   } 
@@ -28,24 +28,29 @@ iv.str <- function(df,x,y,verbose=FALSE) {
   if (!(all(sort(unique(df[, y])) == c(0,1))) && is.numeric(df[,y])) {
     stop("Numeric outcome has to be encoded as 0 (good) and 1 (bad). \n")
   }
+
+  # Get total bad case number.
   if (is.factor(df[,y]) && all(levels(df[,y])[order(levels(df[,y]))]==c("bad","good"))) {
     if (verbose) cat("Assuming good = level 'good' and bad = level 'bad' \n")
     total_1 <- sum(df[,y]=="bad")
-    } else if (is.factor(df[,y])) {
+  } else if (is.factor(df[,y])) {
     if (verbose) cat("Factor: Assuming bad = level 2 and good = level 1 \n")
     total_1 <- sum(as.integer(df[, y])-1)
-
-    } else {
+  } else {
     if (verbose) cat("Numeric: Assuming bad = 1 and good = 0 \n")
     total_1 <-sum(df[, y])
-
   }
 
   outcome_0 <- outcome_1 <- NULL # This is needed to avoid NOTES about not visible binding from R CMD check
   
-  total_0 <- nrow(df) - total_1      
+  total_0 <- nrow(df) - total_1      # Total good case number.
   iv_data <- data.frame(unclass(table(df[, x],df[, y])))
   
+  # Remove NA bin.
+  if (naomit){
+    iv_data = iv_data[rownames(iv_data) != 'NA',]
+  }
+
   if (all(names(iv_data)==c("bad","good"))) {
     iv_data <- iv_data[,c(2,1)]
   }
@@ -61,7 +66,7 @@ iv.str <- function(df,x,y,verbose=FALSE) {
                 woe <- log(odds)
                 miv <- (pct_0 - pct_1) * woe    
   })
-
+  
   if(is.factor(df[,x])) {
     iv_data$class <- factor(iv_data$class,levels=levels(df[,x]))
   }  
