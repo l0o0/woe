@@ -31,13 +31,13 @@ iv.mult <- function(df,y,summary=FALSE,vars=NULL,verbose=FALSE,rcontrol=NULL, na
   }
   
   ivlist <- lapply(vars, function (x) {
+    if (sum(is.na(df[,x])>0)) cat(paste("Found NAN in variable:", x, "\n"))
       if(is.numeric(df[,x])) {
         if (verbose) cat(paste("Calling iv.num for variable:", x, "\n"))
-        if (sum(is.na(df[,x])>0)) cat(paste("Found NAN in variable:", x, "\n"))
         iv.num(df,x,y,verbose=verbose,rcontrol=rcontrol, naomit=naomit)
       } else {
         if (verbose) cat(paste("Calling iv.str for variable:", x, "\n"))
-        iv.str(df,x,y,verbose=verbose)  
+        iv.str(df,x,y,verbose=verbose, naomit=naomit)  
       }
     }
   )
