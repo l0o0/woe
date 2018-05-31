@@ -30,20 +30,27 @@ iv.str <- function(df,x,y,verbose=FALSE, naomit=TRUE) {
   }
   
   # Get total bad case number.
-  if (is.factor(df[,y]) && all(levels(df[,y])[order(levels(df[,y]))]==c("bad","good"))) {
+  tmp_label = df[, y]
+
+  if (naomit){
+    tmp_label = tmp_label[!is.na(df[,x])]
+  }
+
+  if (is.factor(tmp_label) && all(levels(tmp_label)[order(levels(tmp_label))]==c("bad","good"))) {
     if (verbose) cat("Assuming good = level 'good' and bad = level 'bad' \n")
-    total_1 <- sum(df[,y]=="bad")
-  } else if (is.factor(df[,y])) {
+    total_1 <- sum(tmp_label=="bad")
+  } else if (is.factor(tmp_label)) {
     if (verbose) cat("Factor: Assuming bad = level 2 and good = level 1 \n")
-    total_1 <- sum(as.integer(df[, y])-1)
+    total_1 <- sum(as.integer(tmp_label)-1)
   } else {
     if (verbose) cat("Numeric: Assuming bad = 1 and good = 0 \n")
-    total_1 <-sum(df[, y])
+    total_1 <-sum(tmp_label)
   }
-  
+  total_0 <- length(tmp_label) - total_1      # Total good case number.
+
+  cat(sprintf("Total bad %s, total good %s\n", total_1, total_0)[1])
+
   outcome_0 <- outcome_1 <- NULL # This is needed to avoid NOTES about not visible binding from R CMD check
-  
-  total_0 <- nrow(df) - total_1      # Total good case number.
   
   if ((!naomit) && (sum(is.na(df[,x])>0))){
     tmp_vector = as.vector(df[, x])

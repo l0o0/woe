@@ -45,9 +45,6 @@ iv.num <- function(df,x,y,verbose=FALSE,rcontrol=NULL, naomit=TRUE) {
     no_na_row <- rownames(df)[!is.na(df[,x])]
     rownames(t) = no_na_row
     df <- merge(df, t["tmp_iv_calc_label"], by=0, all=TRUE)
-    tmp_vector = as.vector(df[, 'tmp_iv_calc_label'])
-    tmp_vector[is.na(tmp_vector)] = 'NA'  # add 'NA' in vector
-    df[, 'tmp_iv_calc_label'] = factor(tmp_vector)
   }
   else {
     df <- merge(df, t["tmp_iv_calc_label"], by=0, all=TRUE) # str(df)
