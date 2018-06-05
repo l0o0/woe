@@ -2,7 +2,7 @@
 \alias{iv.mult}
 \title{Calculate Information Value for defined columns in data frame}
 \usage{
-  iv.mult(df, y, summary = FALSE, vars = NULL,
+  iv.mult(df, y, summary = FALSE, vars = NULL, naomit=TRUE
     verbose = FALSE, rcontrol = NULL)
 }
 \arguments{
@@ -21,6 +21,9 @@
 
   \item{vars}{List of variables. If not specified, all
   character variables will be used}
+
+  \item{naomit}{Wether to omit NA values, default is TRUE.
+  NAs will grouped in a bin when naomit = FALSE}
 
   \item{verbose}{Prints additional details when TRUE.
   Useful mainly for debugging.}

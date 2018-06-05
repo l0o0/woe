@@ -1,6 +1,6 @@
-THIS PACKAGE IN NOT MAINTAINED ANYMORE. I KEEP IT HERE ONLY BECAUSE SOME PEOPLE FIND IT INTERESTING
-======
+# WOE in R
 
-riv
-===
-R package. Calculate information value for variables. Used as data transformation step in credit scoring.
+
+This package is based on tomasgreif's work on [github](https://github.com/tomasgreif/woe).
+
+WOE is a R package for calculating information value for variables. Used as data transformation step in credit scoring.

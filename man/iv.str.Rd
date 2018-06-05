@@ -2,7 +2,7 @@
 \alias{iv.str}
 \title{Calculate Information Value for character or factor columns}
 \usage{
-  iv.str(df, x, y, verbose = FALSE)
+  iv.str(df, x, y, naomit = TRUE, verbose = FALSE)
 }
 \arguments{
   \item{df}{data frame with at least two columns (predictor
@@ -17,6 +17,9 @@
   levels good/bad than the following assumptions are
   applied - if y is integer, than 0=good and 1=bad. If y is
   factor than level 2 is assumed to mean bad and 1 good.}
+
+  \item{naomit}{Wether to omit NA values, default is TRUE.
+  NAs will grouped in a bin when naomit = FALSE}
 
   \item{verbose}{Prints additional details when TRUE.
   Useful mainly for debugging.}

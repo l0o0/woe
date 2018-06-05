@@ -2,7 +2,7 @@
 \alias{iv.num}
 \title{Calculate Information Value for numeric (double/integer) vectors}
 \usage{
-  iv.num(df, x, y, verbose = FALSE, rcontrol = NULL)
+  iv.num(df, x, y, naomit = TRUE, verbose = FALSE, rcontrol = NULL)
 }
 \arguments{
   \item{df}{data frame with at least two columns}
@@ -16,6 +16,9 @@
   assumptions are applied - if y is integer, than 0=good
   and 1=bad. If y is factor than level 2 is assumed to mean
   bad and 1 good.}
+
+  \item{naomit}{Wether to omit NA values, default is TRUE.
+  NAs will grouped in a bin when naomit = FALSE}
 
   \item{verbose}{Prints additional details when TRUE.
   Useful mainly for debugging.}
