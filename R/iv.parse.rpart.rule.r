@@ -32,11 +32,11 @@ out_rule[i,"max"] <- if (!(is.na(le) && is.na(l))) max(le,l,na.rm=T) else NA
 out_rule[i,"min_comp"] <- ifelse(!is.na(ge),">=",ifelse(!is.na(g),">",""))
 out_rule[i,"max_comp"] <- ifelse(!is.na(le),"<=",ifelse(!is.na(l),"<",""))
 out_rule[i,"class_label"] <- paste0(
-                    ifelse(!is.na(ge),"<","("),
+                    "[",
                     ifelse(is.na(out_rule$min[i]),"",out_rule$min[i]),
-                    ";",
+                    ":",
                     ifelse(is.na(out_rule$max[i]),"",out_rule$max[i]),
-                    ifelse(!is.na(le),">",")")
+                    ")"
                     )
 out_rule[i,"sql"] <- paste0("when ",
                               ifelse(is.na(out_rule$min[i]),"",paste(x,out_rule$min_comp[i],out_rule$min[i])),
