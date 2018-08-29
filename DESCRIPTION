@@ -30,3 +30,4 @@ Collate:
     'varlist.r'
     'woe-package.r'
     'iv.binning.simple.r'
+    'iv.summary.r'
