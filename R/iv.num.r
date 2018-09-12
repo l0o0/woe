@@ -44,10 +44,10 @@ iv.num <- function(df,x,y,verbose=FALSE,rcontrol=NULL, naomit=TRUE) {
   if (sum(is.na(df[,x])>0)) {
     no_na_row <- rownames(df)[!is.na(df[,x])]
     rownames(t) = no_na_row
-    df <- merge(df, t["tmp_iv_calc_label"], by=0, all=TRUE)
+    df <- merge(df[, c(x,y)], t["tmp_iv_calc_label"], by=0, all=TRUE)
   }
   else {
-    df <- merge(df, t["tmp_iv_calc_label"], by=0, all=TRUE) # str(df)
+    df <- merge(df[, c(x,y)], t["tmp_iv_calc_label"], by=0, all=TRUE) 
   }
   if(verbose) cat("  Calling iv.str for nodes",sep="\n")
   iv_data <- iv.str(df,"tmp_iv_calc_label", y, naomit=naomit)
@@ -55,6 +55,4 @@ iv.num <- function(df,x,y,verbose=FALSE,rcontrol=NULL, naomit=TRUE) {
   if(verbose) cat("  Formatting output",sep="\n")
   iv_data$variable <- x
   iv_data
-  #sqldf("select iv.*, tr.sql || woe as sql from iv_data iv join tree_rules tr on (iv.class=tr.class_label) order by tr.min")
 }
-
