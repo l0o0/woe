@@ -30,6 +30,9 @@ iv.mult <- function(df,y,summary=FALSE,vars=NULL,verbose=FALSE,rcontrol=NULL, na
     vars <- names(df)[names(df) !=y]
   }
   
+  # rebuild row name index.
+  row.names(df) = 1:dim(df)[1]
+  
   ivlist <- lapply(vars, function (x) {
     if (sum(is.na(df[,x])>0)) cat(paste("Found NAN in variable:", x, "\n"))
       if(is.numeric(df[,x])) {
