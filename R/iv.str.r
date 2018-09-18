@@ -77,9 +77,9 @@ iv.str <- function(df,x,y,verbose=FALSE, naomit=TRUE) {
     variable <- x
     pct_0 <- outcome_0 / total_0
     pct_1 <- outcome_1 / total_1
-    odds <-  pct_0 / pct_1
+    odds <-  pct_1 / pct_0
     woe <- log(odds)
-    miv <- (pct_0 - pct_1) * woe    
+    miv <- (pct_1 - pct_0) * woe    
   })
 
   
